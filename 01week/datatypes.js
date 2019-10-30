@@ -80,4 +80,3 @@ myVariable = false;
 yourVariable = false;
 if(!myVariable && !yourVariable) { 
     console.log("Both are false")
-
