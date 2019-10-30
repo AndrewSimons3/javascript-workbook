@@ -1,6 +1,6 @@
 //problem 1
 let d = new Date()
-console.log(d.toLocaleString())
+console.log(d.toString())
 
 //problem 2
 function convertNumToString(num) {
@@ -11,7 +11,6 @@ function convertNumToString(num) {
 }
 console.log(convertNumToString(undefined))
 console.log(convertNumToString(5.38))
-
 
 //problem 3
 function convertStringToNum(str) {
@@ -79,4 +78,3 @@ myVariable = false;
 yourVariable = false;
 if(!myVariable && !yourVariable) { 
     console.log("Both are false")
-    }
