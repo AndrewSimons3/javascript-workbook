@@ -7,17 +7,29 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-
+function isValid(hand){
+  return hand === 'rock' || hand === 'scissors' || hand === 'paper'
+}
 function rockPaperScissors(hand1, hand2) {
-
+  if (!hand1 || !hand2) {
+    return 'error, invalid input'
+  }
   // Write code here
-  
+   //sanitizing
   hand1 = hand1.toLowerCase().trim()
   hand2 = hand2.toLowerCase().trim()
 
+  //validation
+  //check if inputs are one of rock, paper, scissors
+  if (!isValid(hand1) || !isValid(hand2)) {
+    return "error, invalid input"
+  }
+
+ 
+
   if (hand1 === hand2) {
     return "It's a tie!"
-
+  
   } else if (hand1 === 'rock' && hand2 === 'scissors') {
     return "Hand one wins!"
 
@@ -37,10 +49,10 @@ function rockPaperScissors(hand1, hand2) {
     return "Hand two wins!"
   
   } else {
-    return "You both lose"}
+    return "You both lose"
   }
-
 }
+
 
 function getPrompt() {
   rl.question('hand1: ', (answer1) => {
@@ -75,8 +87,9 @@ if (typeof describe === 'function') {
       assert.equal(rockPaperScissors('Paper', 'SCISSORS'), "Hand two wins!");
       assert.equal(rockPaperScissors('rock ', 'sCiSsOrs'), "Hand one wins!");
     });
-    it('return error if input is not rock, paper, or scissors')
-    assert.equal(rockPaperScissors('");
+    it('should return error if input is not rock, paper, or scissors', () => {
+      assert.equal(rockPaperScissors('junk', 'scissors'), 'error, invalid input');
+    });
   });
 } else {
 
