@@ -11,19 +11,19 @@
     <body>
         <table>
             <tr>
-                <td id='corner'>-</td>
-                <td>-</td>
-                <td>-</td>
+                <td data-row="0" data-col="0" class = "board-square">-</td>
+                <td data-row="0" data-col="1" class = "board-square">-</td>
+                <td data-row="0" data-col="2" class = "board-square">-</td>
             </tr>
             <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
+                <td data-row="1" data-col="0" class = "board-square">-</td>
+                <td data-row="1" data-col="1" class = "board-square">-</td>
+                <td data-row="1" data-col="2" class = "board-square">-</td>
             </tr>
             <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
+                <td data-row="2" data-col="0" class = "board-square">-</td>
+                <td data-row="2" data-col="1" class = "board-square">-</td>
+                <td data-row="2" data-col="2" class = "board-square">-</td>
             </tr>
         </table>
     </body>
@@ -31,10 +31,23 @@
 
 <script>
 
-  document.getElementById('corner').addEventListener("click", test);
+  const squares = document.querySelectorAll('.board-square');
 
-  function test (event) {
-    console.log(event);
+  squares.forEach(function(item) {
+    item.addEventListener("click", handleClick);
+  });
+
+  function handleClick (event) {
+    //console.log(event.target);
+    
+    let square = event.target;
+    square.textContent = playerTurn;
+
+    let squareCol = square.dataset.col;
+    let squareRow = square.dataset.row;
+
+    console.log(squareCol, squareRow);
+    ticTacToe(squareCol, squareRow);
   }
 
   let board = [
