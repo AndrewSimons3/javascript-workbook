@@ -8,163 +8,89 @@
             }
         </style>
     </head>
-    <body>
+    <body onload="ticTacToe()">
+  
         <table>
             <tr>
-                <td data-row="0" data-col="0" class="board-square">-</td>
-                <td data-row="0" data-col="1" class="board-square">-</td>
-                <td data-row="0" data-col="2" class="board-square">-</td>
+                <td id="box1"class="board-square" onclick="mark(this)"></td>
+                <td id="box2"class="board-square" onclick="mark(this)"></td>
+                <td id="box3"class="board-square" onclick="mark(this)"></td>
             </tr>
             <tr>
-                <td data-row="1" data-col="0" class="board-square">-</td>
-                <td data-row="1" data-col="1" class="board-square">-</td>
-                <td data-row="1" data-col="2" class ="board-square">-</td>
+                <td id="box4"class="board-square" onclick="mark(this)"></td>
+                <td id="box5"class="board-square" onclick="mark(this)"></td>
+                <td id="box6"class="board-square" onclick="mark(this)"></td>
             </tr>
             <tr>
-                <td data-row="2" data-col="0" class ="board-square">-</td>
-                <td data-row="2" data-col="1" class ="board-square">-</td>
-                <td data-row="2" data-col="2" class ="board-square">-</td>
+                <td id="box7"class="board-square" onclick="mark(this)"></td>
+                <td id="box8"class="board-square" onclick="mark(this)"></td>
+                <td id="box9"class="board-square" onclick="mark(this)"></td>
             </tr>
         </table>
+        <div id="message">
+
+        </div>
     </body>
 </html>
 
 <script>
 
-  const squares = document.querySelectorAll('.board-square');
-
-  squares.forEach(function(item) {
-    item.addEventListener("click", handleClick);
-  });
-
-  function handleClick (event) {
-    //console.log(event.target);
-    
-    let square = event.target;
-    square.textContent = playerTurn;
-
-    let squareCol = square.dataset.col;
-    let squareRow = square.dataset.row;
-
-    console.log(squareCol, squareRow);
-    ticTacToe(squareCol, squareRow);
+  const ticTacToe = () => {
+    for(let i = 1; i <= 9; i++) {
+      clearBoard(i)
+    }
+    document.playerTurn = 'X';
+    setMessage("Let's play tic tac toe!")
   }
 
-  let board = [
-  [' ', ' ', ' '],
-  [' ', ' ', ' '],
-  [' ', ' ', ' ']
-];
-
-let playerTurn = 'X';
-
-function printBoard() {
-  console.log('   0  1  2');
-  console.log('0 ' + board[0].join(' | '));
-  console.log('  ---------');
-  console.log('1 ' + board[1].join(' | '));
-  console.log('  ---------');
-  console.log('2 ' + board[2].join(' | '));
-}
-
-function horizontalWin() {
-  // Your code here
-  //check the rows of the board for a match
-  if (
-    board[0][0] === playerTurn && 
-    board[0][1] === playerTurn && 
-    board[0][2] === playerTurn
-  ) {
-  return true;
-} else if (
-    board[1][0] === playerTurn && 
-    board[1][1] === playerTurn && 
-    board[1][2] === playerTurn
-) {
-  return true;
-} else if (
-    board[2][0] === playerTurn && 
-    board[2][1] === playerTurn && 
-    board[2][2] === playerTurn
-)
-  return false
-}
-
-function verticalWin() {
-  // Your code here
-  //check the columns of the board for a match
-  if (
-    board[0][0] === playerTurn && 
-    board[1][0] === playerTurn && 
-    board[2][0] === playerTurn
-  ) {
-  return true;
-} else if (
-    board[0][1] === playerTurn && 
-    board[1][1] === playerTurn && 
-    board[2][1] === playerTurn
-) {
-  return true;
-} else if (
-    board[0][2] === playerTurn && 
-    board[1][2] === playerTurn && 
-    board[2][2] === playerTurn
-)
-  return false
-}
-
-function diagonalWin() {
-  // Your code here
-  // check for diagonal pattern top left to bottom right and top right to bottom left on the board
-  if (
-    board[0][0] === playerTurn && 
-    board[1][1] === playerTurn && 
-    board[2][2] === playerTurn
-  ) {
-  return true;
-} else if (
-    board[0][2] === playerTurn && 
-    board[1][1] === playerTurn && 
-    board[2][0] === playerTurn
-) {
-  return true;
-}
-  return false
-}
-
-function checkForWin() {
-  // Your code here
-  // check for horizontal, diagonal, and vertical wins
-  // return true if any of those checks return true
-  if (horizontalWin || verticalWin || diagonalWin === true
-) {
-  return true;
-}
-}
-
-function ticTacToe(row, column) {
-  // Your code here
-  // manipulate the board (place an X or O) array based on the user input (row, column)
-  let selectedRow = board[row];
-  selectedRow[column] = playerTurn;
-
-  // manipulate the player turn variable and switch from either X to O or O to X
-  if (playerTurn === 'X') {
-    playerTurn = 'O';
-  } else if (playerTurn === 'O') {
-    playerTurn = 'X';
+  const setMessage = msg => {
+    document.getElementById("message").innerText=msg
   }
-}
 
-function getPrompt() {
-  printBoard();
-  console.log("It's Player " + playerTurn + "'s turn.");
-  rl.question('row: ', (row) => {
-    rl.question('column: ', (column) => {
-      ticTacToe(row, column);
-      getPrompt();
-    });
-  });
+  const mark = box => {
+    if (box.innerText === '') {
+      box.innerText = document.playerTurn;
+      switchPlayer()
+    }
+  }
 
-}
+  const switchPlayer = () => {
+      if(checkForWin(document.playerTurn)) {
+        setMessage("Hey you" + document.playerTurn + "! wins!");
+      }
+      else if (document.playerTurn === 'X') {
+      document.playerTurn = 'O';
+      }
+      else {
+        document.playerTurn = 'X';
+    }
+  }
+
+  const checkForWin = (play) => {
+   if(checkBoxes(1, 2, 3, play) || 
+      checkBoxes(4, 5, 6, play) ||
+      checkBoxes(7, 8, 9, play) ||
+      checkBoxes(1, 4, 7, play) ||
+      checkBoxes(2, 5, 8, play) ||
+      checkBoxes(3, 6, 9, play) ||
+      checkBoxes(1, 5, 9, play) ||
+      checkBoxes(3, 5, 7, play)) {
+        return true
+      }
+  }
+
+  const checkBoxes = (a, b, c, play) => {
+    if(getPosition(a) === play && getPosition(b) === play && getPosition(c) === play){
+      return true
+    }
+  }
+
+  const getPosition = num => {
+    document.getElementById("box" + num).innerText
+  }
+
+  const clearBoard = num => {
+    document.getElementById("box" + num).innerText = ''
+  }
+
 </script>
