@@ -1,65 +1,73 @@
 <html>
-  <head>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="css/styles.css" rel="stylesheet" type="text/css" />
-    <title>Pig latin translator</title>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Pig latin translator</h1>
-
-      <form>
-        <div class="form-group">
-          <label for="sentance">Enter a sentance to translate</label>
-          <input type="text" class="form-control" id="sentance" />
-        </div>
-        <button type="submit" class="btn">Submit</button>
-      </form>
-
-      <div class="translation">
-        <p>
-
-        </p>
-      </div>
-    </div>
-    
+  
+<head>
 <script>
 'use strict';
 
-const assert = require('assert');
-const readline = require('readline');
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
-
-function pigLatin(word) {
+function pigLatin(phrase) {
 
   // Your code here
 
-  word = word.toLowerCase().trim();
+  phrase = phrase.toLowerCase().trim();
 
   const vowels = ['a', 'e', 'i,','o', 'u', 'y']
-  const firstLetter = word[0];
+  const firstLetter = phrase[0];
 
   if (vowels.includes(firstLetter)) {
-    return word + 'yay';
+    return phrase + 'yay';
   }
   else {
-    for (let i = 0; i < word.length; i++) {
-      if(vowels.includes(word[i])) {
-        return word.slice(i) + word.slice(0, i) + "ay";
-      }
+    // Loop through each vowel
+    // Get the first vowel instance
+    // return result based on that index
+    const firstInstanceOfVowel = vowels.reduce((result, currentValue) => {
+      let indexOfVowel = phrase.indexOf(currentValue);
+      indexOfVowel = indexOfVowel > -1 ? indexOfVowel : result
+      return Math.min(result, indexOfVowel);
+    }, 1000000)
+
+    if (firstInstanceOfVowel === 1000000) {
+      return phrase
     }
+
+    return phrase.slice(firstInstanceOfVowel) + phrase.slice(0, firstInstanceOfVowel) + "ay";
+
+    // for (let i = 0; i < phrase.length; i++) {
+    //   if(vowels.includes(phrase[i])) {
+    //     return phrase.slice(i) + phrase.slice(0, i) + "ay";
+    //   }
+    // }
   }
 }
 
 
 function getPrompt() {
   rl.question('word ', (answer) => {
-    console.log( pigLatin(answer) );
+    console.log( pigLatin(answer));
     getPrompt();
   });
 }
+
+function generateResult() {
+  const inputText =  document.getElementById('pigLatinWord').value
+  console.log(inputText)
+  const pigLatinResult = pigLatin(inputText)
+  console.log(pigLatinResult)
+  document.getElementById('result').innerHTML = pigLatinResult
+}
 </script>
+  
+</head>
+  <body>
+    <div>
+      <input id="pigLatinWord" placeholder='enter a word or phrase' type="text">
+      <button onclick='generateResult()'>
+        convert
+      </button>
+      <div id="result">
+        
+      </div>
+    </div>
+  </body>
+</html>
