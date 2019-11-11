@@ -66,27 +66,23 @@
     }
   }
 
-  const checkForWin = (play) => {
-   if(checkBoxes(1, 2, 3, play) || 
-      checkBoxes(4, 5, 6, play) ||
-      checkBoxes(7, 8, 9, play) ||
-      checkBoxes(1, 4, 7, play) ||
-      checkBoxes(2, 5, 8, play) ||
-      checkBoxes(3, 6, 9, play) ||
-      checkBoxes(1, 5, 9, play) ||
-      checkBoxes(3, 5, 7, play)) {
-        return true
-      }
+  const checkForWin = (playerTurn) => {
+    return checkBoxes(1, 2, 3, playerTurn) || 
+      checkBoxes(4, 5, 6, playerTurn) ||
+      checkBoxes(7, 8, 9, playerTurn) ||
+      checkBoxes(1, 4, 7, playerTurn) ||
+      checkBoxes(2, 5, 8, playerTurn) ||
+      checkBoxes(3, 6, 9, playerTurn) ||
+      checkBoxes(1, 5, 9, playerTurn) ||
+      checkBoxes(3, 5, 7, playerTurn)
   }
 
-  const checkBoxes = (a, b, c, play) => {
-    if(getPosition(a) === play && getPosition(b) === play && getPosition(c) === play){
-      return true
-    }
+  const checkBoxes = (a, b, c, playerTurn) => {
+    return getPosition(a) === playerTurn && getPosition(b) === playerTurn && getPosition(c) === playerTurn
   }
 
   const getPosition = num => {
-    document.getElementById("box" + num).innerText
+    return document.getElementById("box" + num).innerText
   }
 
   const clearBoard = num => {
