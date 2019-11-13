@@ -30,6 +30,15 @@ function getRandomInt(min, max) {
 
 function generateHint() {
   // your code here
+  const solutionArray = solution.split('');
+  //should be ['a', 'b', 'c', 'd']
+  
+  const guessArray = guess.split('');
+  //if guess was 'abdc'
+  //should be ['a', 'b', 'd', 'c']
+
+  const correctLetterLocations = 0;
+    for()
 }
 
 function mastermind(guess) {
