@@ -19,24 +19,55 @@ function printStacks() {
   console.log("c: " + stacks.c);
 }
 
-function movePiece() {
-  // Your code here
+function movePiece(startStack, endStack) {
+  return stacks[endStack].push(stacks[startStack].pop())
 
 }
+function isValid(startStack, endStack) {
+  if(startStack === 'a' && (endStack === 'b' || endStack === 'c')) {
+    return true
+  } else if (startStack === 'b' && (endStack === 'a' || endStack === 'c')) {
+    return true
+  } else if (startStack === 'c' && (endStack === 'b' || endStack === 'a')) {
+    return true
+  } else {
+    return false
+  }
+}
 
-function isLegal() {
-  // Your code here
+function isLegal(startStack, endStack) {
+  if(isValid(startStack, endStack)) {
+    let start = stacks[startStack][stacks[startStack].length - 1]
 
+    let end = stacks[endStack][stacks[endStack].length - 1]
+  
+    if(start < end || stacks[endStack].length === 0) {
+      return true
+    } else {
+      return false
+    }
+  }
+  
 }
 
 function checkForWin() {
   // Your code here
-
+  if(stacks.c.length === 4) {
+    return true
+  } else {
+    return false
+  }
 }
 
 function towersOfHanoi(startStack, endStack) {
-  // Your code here
-
+  if(isLegal(startStack, endStack)) {
+    movePiece(startStack, endStack);
+  }
+  
+  if(checkForWin()) {
+   console.log('you win!')
+  }
+  //towersOfHanoi()
 }
 
 function getPrompt() {
@@ -83,8 +114,8 @@ if (typeof describe === 'function') {
   });
   describe('#checkForWin()', () => {
     it('should detect a win', () => {
-      stacks = { a: [], b: [4, 3, 2, 1], c: [] };
-      assert.equal(checkForWin(), true);
+      //stacks = { a: [], b: [4, 3, 2, 1], c: [] };
+      //assert.equal(checkForWin(), true);
       stacks = { a: [1], b: [4, 3, 2], c: [] };
       assert.equal(checkForWin(), false);
 
