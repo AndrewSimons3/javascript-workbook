@@ -92,7 +92,7 @@ if (typeof describe === 'function') {
 
     it('should be able to move a block', () => {  
       towersOfHanoi('a', 'c');
-      assert.deepEqual(stacks, { a: [4, 3, 2], b: [1], c: [] });
+      assert.deepEqual(stacks, { a: [4, 3,], b: [1], c: [2] });
     });
   });
 
@@ -112,6 +112,14 @@ if (typeof describe === 'function') {
         c: []
       };
       assert.equal(isLegal('a', 'c'), true);
+    });
+    it('should not allow an illegal move', () => {
+      stacks = {
+        a: [4, 3, 2],
+        b: [],
+        c: [1]
+      };
+      assert.equal(isLegal('a', 'b'), true);
     });
   });
   describe('#checkForWin()', () => {
