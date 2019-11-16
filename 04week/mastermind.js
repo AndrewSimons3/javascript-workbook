@@ -28,7 +28,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function generateHint() {
+function generateHint(guess) {
   // your code here
   const solutionArray = solution.split('');
   //should be ['a', 'b', 'c', 'd']
@@ -37,8 +37,32 @@ function generateHint() {
   //if guess was 'abdc'
   //should be ['a', 'b', 'd', 'c']
 
-  const correctLetterLocations = 0;
-    for()
+  let redPegs = 0;
+  let whitePegs = 0;
+
+    for (let i = 0; i < solutionArray.length; i++) {
+      if (solutionArray[i] === guessArray[i]) {
+        redPegs++;
+        solutionArray[i] = null;
+      }
+    }
+
+    let targetIndex = null;
+    // checking for WhitePegs
+    for (let i = 0; i < guessArray.length; i++)
+    {
+        targetIndex = solutionArray.indexOf(guessArray[i]);
+
+        if (targetIndex > -1) {
+          whitePegs ++;
+          solutionArray[i] = null;
+        }
+    }
+
+    //return a string representation of redPegs and whitePegs variables
+      return '${redPegs}-${whitePegs}';
+      // return redPegs + '-' + whitePegs;
+    
 }
 
 function mastermind(guess) {
