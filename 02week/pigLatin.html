@@ -1,0 +1,73 @@
+<html>
+  
+<head>
+<script>
+'use strict';
+
+
+function pigLatin(phrase) {
+
+  // Your code here
+
+  phrase = phrase.toLowerCase().trim();
+
+  const vowels = ['a', 'e', 'i,','o', 'u', 'y']
+  const firstLetter = phrase[0];
+
+  if (vowels.includes(firstLetter)) {
+    return phrase + 'yay';
+  }
+  else {
+    // Loop through each vowel
+    // Get the first vowel instance
+    // return result based on that index
+    const firstInstanceOfVowel = vowels.reduce((result, currentValue) => {
+      let indexOfVowel = phrase.indexOf(currentValue);
+      indexOfVowel = indexOfVowel > -1 ? indexOfVowel : result
+      return Math.min(result, indexOfVowel);
+    }, 1000000)
+
+    if (firstInstanceOfVowel === 1000000) {
+      return phrase
+    }
+
+    return phrase.slice(firstInstanceOfVowel) + phrase.slice(0, firstInstanceOfVowel) + "ay";
+
+    // for (let i = 0; i < phrase.length; i++) {
+    //   if(vowels.includes(phrase[i])) {
+    //     return phrase.slice(i) + phrase.slice(0, i) + "ay";
+    //   }
+    // }
+  }
+}
+
+
+function getPrompt() {
+  rl.question('word ', (answer) => {
+    console.log( pigLatin(answer));
+    getPrompt();
+  });
+}
+
+function generateResult() {
+  const inputText =  document.getElementById('pigLatinWord').value
+  console.log(inputText)
+  const pigLatinResult = pigLatin(inputText)
+  console.log(pigLatinResult)
+  document.getElementById('result').innerHTML = pigLatinResult
+}
+</script>
+  
+</head>
+  <body>
+    <div>
+      <input id="pigLatinWord" placeholder='enter a word or phrase' type="text">
+      <button onclick='generateResult()'>
+        convert
+      </button>
+      <div id="result">
+        
+      </div>
+    </div>
+  </body>
+</html>
