@@ -1,5 +1,5 @@
 'use strict';
-
+require('colors');
 const assert = require('assert');
 const readline = require('readline');
 const rl = readline.createInterface({
@@ -7,6 +7,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+let numberOftrys = 10
 let board = [];
 let solution = '';
 let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -47,35 +48,56 @@ function generateHint(guess) {
       }
     }
 
-    let targetIndex = null;
     // checking for WhitePegs
     for (let i = 0; i < guessArray.length; i++)
     {
-        targetIndex = solutionArray.indexOf(guessArray[i]);
+        const guessItem = guessArray[i]
+        const targetIndex = solutionArray.indexOf(guessItem);
 
         if (targetIndex > -1) {
-          whitePegs ++;
-          solutionArray[i] = null;
+          whitePegs++;
+          solutionArray[targetIndex] = null;
         }
     }
-
+      let redPegsString = `${redPegs}`.red
+      let whitePegsString = `${whitePegs}`.white
     //return a string representation of redPegs and whitePegs variables
-      return '${redPegs}-${whitePegs}';
+      return `${redPegsString}-${whitePegsString}`;
       // return redPegs + '-' + whitePegs;
     
 }
 
 function mastermind(guess) {
-  solution = 'abcd'; // Comment this out to generate a random solution
-  // your code here
+  
+  //solution = 'abcd'; // Comment this out to generate a random solution
+  
+  if (solution === guess) {
+    console.log('You guessed it!')
+  } else if (board.length >= numberOftrys) {
+    console.log('You ran out of turns!')
+  } else {
+    console.log('Guess again!')
+  }
+
+  return solution === guess || board.length >= numberOftrys
+
 }
 
 
 function getPrompt() {
   rl.question('guess: ', (guess) => {
-    mastermind(guess);
-    printBoard();
-    getPrompt();
+   
+    
+    if (mastermind(guess)) {
+      console.log(solution)
+    } else {
+      //answer was incorrect
+      let hint = generateHint(guess)
+      let boardItem = `${guess}-${hint}`;
+      board.push(boardItem)
+      printBoard()
+      getPrompt()
+    }
   });
 }
 
