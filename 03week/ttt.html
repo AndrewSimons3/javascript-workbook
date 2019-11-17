@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <style type="text/css">
+            table { border: 1px solid black }
+            td { 
+                border: 1px solid black;
+                padding: 40px;
+            }
+        </style>
+    </head>
+    <body onload="ticTacToe()">
+  
+        <table>
+            <tr>
+                <td id="box1"class="board-square" onclick="mark(this)"></td>
+                <td id="box2"class="board-square" onclick="mark(this)"></td>
+                <td id="box3"class="board-square" onclick="mark(this)"></td>
+            </tr>
+            <tr>
+                <td id="box4"class="board-square" onclick="mark(this)"></td>
+                <td id="box5"class="board-square" onclick="mark(this)"></td>
+                <td id="box6"class="board-square" onclick="mark(this)"></td>
+            </tr>
+            <tr>
+                <td id="box7"class="board-square" onclick="mark(this)"></td>
+                <td id="box8"class="board-square" onclick="mark(this)"></td>
+                <td id="box9"class="board-square" onclick="mark(this)"></td>
+            </tr>
+        </table>
+        <div id="message">
+
+        </div>
+    </body>
+</html>
+
+<script>
+
+  const ticTacToe = () => {
+    for(let i = 1; i <= 9; i++) {
+      clearBoard(i)
+    }
+    document.playerTurn = 'X';
+    setMessage("Let's play tic tac toe!")
+  }
+
+  const setMessage = msg => {
+    document.getElementById("message").innerText=msg
+  }
+
+  const mark = box => {
+    if (box.innerText === '') {
+      box.innerText = document.playerTurn;
+      switchPlayer()
+    }
+  }
+
+  const switchPlayer = () => {
+      if(checkForWin(document.playerTurn)) {
+        setMessage("Hey you" + document.playerTurn + "! wins!");
+      }
+      else if (document.playerTurn === 'X') {
+      document.playerTurn = 'O';
+      }
+      else {
+        document.playerTurn = 'X';
+    }
+  }
+
+  const checkForWin = (playerTurn) => {
+    return checkBoxes(1, 2, 3, playerTurn) || 
+      checkBoxes(4, 5, 6, playerTurn) ||
+      checkBoxes(7, 8, 9, playerTurn) ||
+      checkBoxes(1, 4, 7, playerTurn) ||
+      checkBoxes(2, 5, 8, playerTurn) ||
+      checkBoxes(3, 6, 9, playerTurn) ||
+      checkBoxes(1, 5, 9, playerTurn) ||
+      checkBoxes(3, 5, 7, playerTurn)
+  }
+
+  const checkBoxes = (a, b, c, playerTurn) => {
+    return getPosition(a) === playerTurn && getPosition(b) === playerTurn && getPosition(c) === playerTurn
+  }
+
+  const getPosition = num => {
+    return document.getElementById("box" + num).innerText
+  }
+
+  const clearBoard = num => {
+    document.getElementById("box" + num).innerText = ''
+  }
+
+</script>
