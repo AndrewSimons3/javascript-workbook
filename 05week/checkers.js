@@ -12,10 +12,18 @@ class Checker {
   constructor(color) {
     if (color === 'white') {
       this.symbol = String.fromCharCode(0x125CB);
-    } else if (symbol === 'black') {
+    } else if (this.symbol === 'black') {
       this.symbol = String.fromCharCode(0x125CF);
+    }
   }
-}
+
+  isWhite() {
+    if(this.symbol === String.fromCharCode(0x125CB)) {
+      return true
+    } else {
+      return false
+    }
+  }
 }
 
 class Board {
@@ -23,6 +31,18 @@ class Board {
     this.grid = []
     this.checkers = [];
   }
+
+  //returns the checker object for the specific row & column
+  selectChecker(row, column) {
+
+
+  }
+
+  killChecker() {
+
+
+  }
+
   // method that creates an 8x8 array, filled with null values
   createGrid() {
     // loop to create the 8 rows
@@ -33,6 +53,7 @@ class Board {
         this.grid[row].push(null);
       }
     }
+    this.grid[2][3]
   }
   viewGrid() {
     // add our column numbers
@@ -44,8 +65,9 @@ class Board {
       for (let column = 0; column < 8; column++) {
         // if the location is "truthy" (contains a checker piece, in this case)
         if (this.grid[row][column]) {
+          let checker = this.grid[row][column]
           // push the symbol of the check in that location into the array
-          rowOfCheckers.push(this.grid[row][column].symbol);
+          rowOfCheckers.push(checker.symbol);
         } else {
           // just push in a blank space
           rowOfCheckers.push(' ');
@@ -70,32 +92,29 @@ class Board {
     [6, 1], [6, 3], [6, 5], [6, 7],
     [7, 0], [7, 2], [7, 4], [7, 6]]
 
-      for(i = 0; i <= 11; i ++) {
-      const row = whitePosition[i,0]
-      const column = whitePosition[i,1]
-      this.grid[row][column] = checker(white);
+    for(let i = 0; i <= 11; i ++) {
+      const row = whitePosition[i][0]
+      const column = whitePosition[i][1]
+      this.grid[row][column] = new Checker('white');
+    }
+    for(let i = 0; i <= 11; i ++) {
+      const row = blackPosition[i][0]
+      const column = blackPosition[i][1]
+      this.grid[row][column] = new Checker('black');
     }
   }
-
   }
 
-  selectChekcer() {
-
-
-  }
-
-  killChecker() {
-
-
-  }
 
 class Game {
   constructor() {
-    this.board = new Board;
+    this.board = new Board();
   }
   start() {
     this.board.createGrid();
+    this.board.createCheckers();
   }
+    
 }
 
 function getPrompt() {
