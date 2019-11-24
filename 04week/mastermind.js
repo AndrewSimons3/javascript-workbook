@@ -59,12 +59,11 @@ function generateHint(guess) {
           solutionArray[targetIndex] = null;
         }
     }
-      let redPegsString = `${redPegs}`.red
-      let whitePegsString = `${whitePegs}`.white
+      let redPegsString = `${redPegs}`
+      let whitePegsString = `${whitePegs}`
     //return a string representation of redPegs and whitePegs variables
       return `${redPegsString}-${whitePegsString}`;
-      // return redPegs + '-' + whitePegs;
-    
+      // return redPegs + '-' + whitePegs;  
 }
 
 function mastermind(guess) {
@@ -79,7 +78,11 @@ function mastermind(guess) {
     console.log('Guess again!')
   }
 
-  return solution === guess || board.length >= numberOftrys
+  let hint = generateHint(guess)
+  let boardItem = `${guess}-${hint}`;
+  board.push(boardItem)
+
+  return solution === guess || board.length > numberOftrys
 
 }
 
@@ -92,9 +95,7 @@ function getPrompt() {
       console.log(solution)
     } else {
       //answer was incorrect
-      let hint = generateHint(guess)
-      let boardItem = `${guess}-${hint}`;
-      board.push(boardItem)
+      
       printBoard()
       getPrompt()
     }
@@ -111,7 +112,7 @@ if (typeof describe === 'function') {
       assert.equal(board.length, 1);
     });
     it('should be able to detect a win', () => {
-      assert.equal(mastermind(solution), 'You guessed it!');
+      assert.equal(mastermind(solution), true);
     });
   });
 
