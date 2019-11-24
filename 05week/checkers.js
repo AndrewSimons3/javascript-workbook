@@ -12,7 +12,7 @@ class Checker {
   constructor(color) {
     if (color === 'white') {
       this.symbol = String.fromCharCode(0x125CB);
-    } else if (this.symbol === 'black') {
+    } else if (color === 'black') {
       this.symbol = String.fromCharCode(0x125CF);
     }
   }
@@ -34,13 +34,48 @@ class Board {
 
   //returns the checker object for the specific row & column
   selectChecker(row, column) {
-
+    return this.grid[row][column]
 
   }
 
-  killChecker() {
+  moveChecker(start, end) {
+    let startRow = parseInt(start[0])
+    let startColumn = parseInt(start[1])
+    let checker = this.selectChecker(startRow, startColumn)
+
+    let endRow = parseInt(end[0])
+    let endColumn = parseInt(end[1])
+    this.grid[endRow][endColumn] = checker;
+    this.grid[startRow][startColumn] = null;
+
+    
+    if (this.isKillMove(startRow, startColumn, endRow, endColumn)) {
+      let position = this.getKillPosition(startRow, startColumn, endRow, endColumn)
+      this.killChecker(position)
+    }
+  
+  }
+  getKillPosition(startRow, startColumn, endRow, endColumn) {
+    let rowPosition = Math.max(startRow, endRow) - 1;
+    let columnPosition = Math.max(startColumn, endColumn) - 1;
+    return [rowPosition, columnPosition]
+  }
+
+  isKillMove(startRow, startColumn, endRow, endColumn) {
+    let rowDiff = Math.abs(startRow - endRow)
+    let colDiff = Math.abs(startColumn - endColumn)
+      return rowDiff == 2 && colDiff == 2
+
+  }
 
 
+  //position - the kill position - [4,1]
+  killChecker(position) {
+    let checker = this.selectChecker(position[0], position[1])
+    this.grid[position[0]][position[1]] = null;
+    let checkerIndex = this.checkers.indexOf(checker)
+    this.checkers.splice(checkerIndex, 1)
+    console.log(position)
   }
 
   // method that creates an 8x8 array, filled with null values
@@ -95,12 +130,16 @@ class Board {
     for(let i = 0; i <= 11; i ++) {
       const row = whitePosition[i][0]
       const column = whitePosition[i][1]
-      this.grid[row][column] = new Checker('white');
+      let checker = new Checker('white');
+      this.grid[row][column] = checker;
+      this.checkers.push(checker)
     }
     for(let i = 0; i <= 11; i ++) {
       const row = blackPosition[i][0]
       const column = blackPosition[i][1]
-      this.grid[row][column] = new Checker('black');
+      let checker = new Checker('black');
+      this.grid[row][column] = checker;
+      this.checkers.push(checker)
     }
   }
   }
@@ -113,6 +152,10 @@ class Game {
   start() {
     this.board.createGrid();
     this.board.createCheckers();
+  }
+
+  moveChecker(start, end) {
+    this.board.moveChecker(start, end)
   }
     
 }
@@ -144,8 +187,10 @@ if (typeof describe === 'function') {
 
   describe('Game.moveChecker()', () => {
     it('should move a checker', () => {
+      assert(game.board.grid[5][0])
       assert(!game.board.grid[4][1]);
       game.moveChecker('50', '41');
+      assert(!game.board.grid[5][0])
       assert(game.board.grid[4][1]);
       game.moveChecker('21', '30');
       assert(game.board.grid[3][0]);
