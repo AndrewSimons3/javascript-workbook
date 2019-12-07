@@ -1,18 +1,32 @@
 'use strict';
-
 const assert = require('assert');
-
 
 function map(arr, callback) {
   // Your code here
+  return arr.map((num) => {
+    return callback(num)
+  });
 }
 
 function filter(arr, callback) {
   // Your code here
+  return arr.filter((num) => {
+    return callback(num)
+  });
 }
 
-function reduce(arr, callback) {
+function reduce(arr, callback, initialValue) {
   // Your code here
+ 
+    if (initialValue) {
+      return arr.reduce((accumulator, currentValue) => {
+        return callback(accumulator, currentValue)
+      }, initialValue);
+    } else {
+      return arr.reduce((accumulator, currentValue) => {
+        return callback(accumulator, currentValue)
+      });
+    }
 }
 
 // function some(arr, callback) {
@@ -24,16 +38,6 @@ function reduce(arr, callback) {
 // }
 
 if (typeof describe === 'function') {
-
-  // describe('#forEach()', () => {
-  //   it('should call the callback the array.length number of times', () => {
-  //     let count = 0;
-  //     forEach([1, 2, 3], () => {
-  //       count++;
-  //     });
-  //     assert.equal(count, 3);
-  //   });
-  // });
 
   describe('#map()', () => {
     const arr = [1, 2, 3];
@@ -56,16 +60,29 @@ if (typeof describe === 'function') {
       assert.deepEqual(filtered, [2]);
     });
   });
-
+  
   describe('#reduce()', () => {
     it('should return a total of all the numbers in an array', () => {
       const reduced = reduce([1, 2, 3], (accumulator, currentValue) => {
-        return accumulator + currentValue
+        return accumulator + currentValue;
       });
-      [1, 2, 3].reduce
+      // const reduced = [1, 2, 3].reduce((accumulator, currentValue) => {
+      //   return accumulator + currentValue;
+      // });
       assert.deepEqual(reduced, 6);
     });
+
+    it('should return a total of all the numbers in an array starting from 10', () => {
+      const reduced = reduce([1, 2, 3], (accumulator, currentValue) => {
+        return accumulator + currentValue;
+      }, 10);
+      // const reduced = [1, 2, 3].reduce((accumulator, currentValue) => {
+      //   return accumulator + currentValue;
+      // });
+      assert.deepEqual(reduced, 16);
+    });
   });
+  
 
   // describe('#some()', () => {
   //   let count = 0;
