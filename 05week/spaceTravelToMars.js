@@ -10,6 +10,39 @@ let jobTypes = {
 };
 
 // Your code here
+class CrewMember {
+  constructor(name, job, specialSkill, ship) {
+    this.name = name;
+    this.job = job;
+    this.specialSkill = specialSkill;
+    this.ship = ship;
+  }
+  enterShip(ship) {
+    this.ship = ship
+    if (!this.ship.crew.includes(this)) {
+      ship.crew.push(this)
+    }
+  } 
+}
+
+
+class Ship {
+  constructor(name, type, ability, crew = []) {
+    this.name = name;
+    this.type = type;
+    this.ability = ability;
+    this.crew = crew;
+  }
+
+  missionStatement() {
+    if (this.crew.length >= 1){
+      return this.ability
+    } else {
+      return "Can't perform a mission yet."
+    }
+  }
+}
+
 
 //tests
 if (typeof describe === 'function'){
@@ -23,8 +56,8 @@ if (typeof describe === 'function'){
     });
 
     it('can enter a ship', function(){
-      let mav = new Ship('Mars Ascent Vehicle', 'MAV', 'Ascend into low orbit');
       let crewMember1 = new CrewMember('Rick Martinez', 'pilot', 'chemistry');
+      let mav = new Ship('Mars Ascent Vehicle', 'MAV', 'Ascend into low orbit', [crewMember1]);
       crewMember1.enterShip(mav);
       assert.equal(crewMember1.ship, mav);
       assert.equal(mav.crew.length, 1);
@@ -35,6 +68,7 @@ if (typeof describe === 'function'){
   describe('Ship', function(){
     it('should have a name, a type, an ability and an empty crew upon instantiation', function(){
       let mav = new Ship('Mars Ascent Vehicle', 'MAV', 'Ascend into low orbit');
+      let crewMember2 = new CrewMember('Tony Stark', 'engineer', 'shit talker', mav)
       assert.equal(mav.name, 'Mars Ascent Vehicle');
       assert.equal(mav.type, 'MAV');
       assert.equal(mav.ability, 'Ascend into low orbit');
