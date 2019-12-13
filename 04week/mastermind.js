@@ -2,6 +2,7 @@
 require('colors');
 const assert = require('assert');
 const readline = require('readline');
+const colors = require('colors');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -59,8 +60,8 @@ function generateHint(guess) {
           solutionArray[targetIndex] = null;
         }
     }
-      let redPegsString = `${redPegs}`
-      let whitePegsString = `${whitePegs}`
+      let redPegsString = `${redPegs}`.red
+      let whitePegsString = `${whitePegs}`.green
     //return a string representation of redPegs and whitePegs variables
       return `${redPegsString}-${whitePegsString}`;
       // return redPegs + '-' + whitePegs;  
