@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 const arrOfPeople = [
   {
     id: 2,
@@ -54,23 +56,33 @@ const listOfPlayers = []
 const blueTeam = []
 const redTeam = []
 
-class Player {
-  constructor(id){
+class DodgeBallPlayer {
+  constructor(id, canThrowBall = true, canDodgeBall = true, isHealthy = true, hasPaid = false, yearsExperience = 1){
     this.id = id
+    this.canThrowBall = canThrowBall
+    this.canDodgeBall = canDodgeBall
+    this.isHealthy = isHealthy
+    this.hasPaid = hasPaid
+    this.yearsExperience = yearsExperience
+  }
+
+  toString() {
+    return `has paid: ${this.hasPaid}\ncan throw ball: ${this.canThrowBall}`
   }
 }
 
-class Teammate extends Player {
+class Teammate extends DodgeBallPlayer {
   constructor(id, color){
     super(id)
     this.color = color
     this.mascot = color == 'red' ? 'cardinal' : 'tiger'
   }
-}
 
-const addPlayer = (id) => {
-  let player = new Player(id)
-  listOfPlayers.push(player)
+  toString() {
+    return `${super.toString()}\nmascot: ${this.mascot}`
+  }
+}
+let moveToPlayerInUi = (id) => {
   const li = document.getElementById(id)
   li.removeChild(li.firstChild)
   const button = document.createElement("button")
@@ -84,22 +96,64 @@ const addPlayer = (id) => {
   const dodgeballPlayers = document.getElementById("players")
   dodgeballPlayers.appendChild(li)
 }
+const addPlayer = (id) => {
+  let player = new DodgeBallPlayer(id)
+  listOfPlayers.push(player)
+  // alert(player.toString())
+  moveToPlayerInUi(id)
+}
 
 const addToTeam = (id, teamType) => {
   console.log(id, teamType)
-  const teamUlElement = document.getElementById(teamType)
-  const li = document.getElementById(id)
-  teamUlElement.appendChild(li)
-  li.removeChild(li.lastChild)
-  li.removeChild(li.lastChild)
+  moveToTeamInUi()
   const player = listOfPlayers.find((player) => {
     return player.id == id
   });
   const teamArr = teamType == 'red' ? redTeam : blueTeam
   const teammate = new Teammate(id, teamType)
+  // alert(teammate.toString())
   teamArr.push(teammate)
   const index = listOfPlayers.indexOf(player)
   listOfPlayers.splice(index, 1)
-  
 }
 
+let moveToTeamInUi = (id, teamType) => {
+  const teamUlElement = document.getElementById(teamType)
+  const li = document.getElementById(id)
+  teamUlElement.appendChild(li)
+  li.removeChild(li.lastChild)
+  li.removeChild(li.lastChild)
+}
+
+if (typeof describe === 'function') {
+  describe('#addPlayer()', () => {
+    it('should add a person to the listOfPlayers', () => {
+      moveToPlayerInUi = () => {}
+      const playerCountBefore = listOfPlayers.length 
+      addPlayer(2)
+      const playerCountAfer = listOfPlayers.length
+      assert.equal(playerCountBefore, playerCountAfer - 1, 'player count did not increase by 1 when adding a player');
+    });
+  });
+
+  describe('#addToTeam()', () => {
+    it('should remove a player from list of dodge ball players', () => {
+      moveToTeamInUi = () => {}
+      const playerCountBefore = listOfPlayers.length 
+      addToTeam(2, 'red')
+      const playerCountAfer = listOfPlayers.length
+      assert.equal(playerCountBefore, playerCountAfer + 1, 'player count did not increase by 1 when adding a player');
+    });
+
+    it('should increment red team array and blue team array remains unchanged', () => {
+      moveToPlayerInUi = () => {}
+      moveToTeamInUi = () => {}
+      addPlayer(3)
+      const blueTeamCountBefore = blueTeam.length 
+      const redTeamCountBefore = redTeam.length
+      addToTeam(3, 'red')
+      assert.equal(redTeam.length, redTeamCountBefore + 1, 'red team count did not increase by 1');
+      assert.equal(blueTeam.length, blueTeamCountBefore, `blue team array count before was ${blueTeamCountBefore} not equal to ${blueTeam.length}`)
+    });
+  });
+}
