@@ -1,4 +1,4 @@
-const assert = require('assert');
+
 
 const arrOfPeople = [
   {
@@ -105,7 +105,7 @@ const addPlayer = (id) => {
 
 const addToTeam = (id, teamType) => {
   console.log(id, teamType)
-  moveToTeamInUi()
+  moveToTeamInUi(id, teamType)
   const player = listOfPlayers.find((player) => {
     return player.id == id
   });
@@ -126,6 +126,7 @@ let moveToTeamInUi = (id, teamType) => {
 }
 
 if (typeof describe === 'function') {
+  const assert = require('assert');
   describe('#addPlayer()', () => {
     it('should add a person to the listOfPlayers', () => {
       moveToPlayerInUi = () => {}
